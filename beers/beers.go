@@ -17,13 +17,22 @@ type Beer struct {
 	FoodPairing []string `json:"food_pairing"`
 }
 
-func GetBeers() (*[]Beer, error) {
+func GetBeers() ([]Beer, error) {
 
-	resp, _ := http.Get(url)
-	body, _ := ioutil.ReadAll(resp.Body)
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
 
 	var beers []Beer
 	json.Unmarshal(body, &beers)
 
-	return &beers, nil
+	return beers, nil
 }
